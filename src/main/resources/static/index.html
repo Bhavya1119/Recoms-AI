@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spotify Track Explorer</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+<div class="page-header">
+    <h1>Recoms-AI</h1>
+    <p>listen what you love</p>
+</div>
+
+<div class="search-container">
+    <input type="text" id="albumId" placeholder="Enter Album ID">
+    <button onclick="fetchAlbumDetails()">Search</button>
+</div>
+
+<div class="album-details" id="albumDetails"></div>
+
+<div class="error-message" id="errorMessage"></div>
+
+<script src="/js/index.js"></script>
+</body>
+</html>
+
