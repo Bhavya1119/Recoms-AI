@@ -1,8 +1,9 @@
 package com.recomsAI.controller
 
-import com.recomsAI.base.api.ApiService
+import com.recomsAI.Driver
+import com.recomsAI.Driver.props
 import com.recomsAI.base.enitity.album.Album
-import com.recomsAI.base.service.AlbumService
+import com.recomsAI.base.service.Album.AlbumService
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.{GetMapping, PathVariable, RestController}
 
@@ -11,7 +12,6 @@ import java.util.Properties
 @RestController
 class AlbumController {
 private val logger = LoggerFactory.getLogger(classOf[AlbumController])
-private var props : Properties = _
 
 
   /**
@@ -23,7 +23,7 @@ private var props : Properties = _
   private def getAlbumDetails(@PathVariable albumId : String):java.util.List[Album]  = {
     logger.info("######### Fetching album Details ####################")
     try{
-      props = ApiService.init()
+      props = Driver.init()
       val albumDetails = new AlbumService().getAlbumDetails(albumId,props)
       albumDetails
     }

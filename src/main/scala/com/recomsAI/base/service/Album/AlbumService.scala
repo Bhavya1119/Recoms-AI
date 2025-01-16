@@ -1,7 +1,6 @@
-package com.recomsAI.base.service
+package com.recomsAI.base.service.Album
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.recomsAI.base.api.ApiService
+import com.recomsAI.Driver.sessionToken
 import com.recomsAI.base.constants.Constants
 import com.recomsAI.base.enitity.album.Album
 import com.recomsAI.base.utils.SchemaUtils
@@ -50,11 +49,9 @@ class AlbumService {
   }
 
   private def getAlbumTracks(albumId: String, props : Properties): HttpResponse[String] = {
-    val apiService = new ApiService()
-    val tokenJson = new ObjectMapper().readTree(apiService.getAuthToken(props))
 
-    val authToken = tokenJson.get("access_token").asText()
-    val tokenType = tokenJson.get("token_type").asText()
+    val authToken = sessionToken.getTokenValue
+    val tokenType = sessionToken.getTokenType.getValue
     try {
       val response = Http(props.getProperty(Constants.ALBUM_ENDPOINT) + albumId + "/tracks")
         .timeout(connTimeoutMs = 600000, readTimeoutMs = 600000)
