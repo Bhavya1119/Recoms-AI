@@ -30,7 +30,7 @@ class AuthController {
 
     sessionToken = client.getAccessToken
 
-    val userAttributes: java.util.Map[String, Object] = authToken.getPrincipal().getAttributes()
+    val userAttributes: java.util.Map[String, Object] = authToken.getPrincipal.getAttributes
 
     logger.info(s"Welcome ${userAttributes.get("display_name")}!")
 

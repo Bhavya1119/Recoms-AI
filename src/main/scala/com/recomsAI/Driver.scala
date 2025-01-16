@@ -27,6 +27,7 @@ class Driver {
 }
 
 object Driver {
+
   private val logger: Logger = LoggerFactory.getLogger(Driver.getClass)
   var props : Properties = _
   var sessionToken : OAuth2AccessToken = _

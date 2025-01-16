@@ -15,7 +15,7 @@ class BaseController {
     "index.html"
   }
   @GetMapping(Array("/sparkJob"))
-  def runSparkJob()  = {
+  def runSparkJob():String  = {
     SparkService.runSparkJob()
     "success"
   }
