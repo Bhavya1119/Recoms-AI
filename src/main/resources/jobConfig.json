@@ -1,0 +1,7 @@
+{
+  "credentials" : {
+    "client_id"       : "a390ec00bea44f9daf56ba8248e16dbb",
+    "client_secret"   : "fbc8fca7f60f4f968dfddbcbfb937837",
+    "credential_type" : "client_credentials"
+  }
+}
