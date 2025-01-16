@@ -16,9 +16,12 @@ class ApiService {
 
    def getAuthToken(props : Properties) : String = {
 
-     val clientId       = props.getProperty(Constants.CLIENT_ID)
-     val clientSecret   = props.getProperty(Constants.CLIENT_SECRET)
-     val grantType      = props.getProperty(Constants.CREDENTIAL_TYPE)
+     val config = FileUtils.loadCredentials()
+     logger.debug("Credentials : {}", config)
+
+     val clientId       = config.clientID
+     val clientSecret   = config.clientSecret
+     val grantType      = config.credentialType
      val tokenEndpoint  = props.getProperty(Constants.API_ENDPOINT)
      val contentType    = props.getProperty(Constants.CONTENT_TYPE)
 
