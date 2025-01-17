@@ -1,6 +1,6 @@
 package com.recomsAI.swagger
 
-import com.recomsAI.base.api.ApiService
+import com.recomsAI.Driver
 import com.recomsAI.base.constants.Constants
 import org.springframework.context.annotation.Bean
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
@@ -18,7 +18,7 @@ class SwaggerConfig {
 
   @Bean
   def api() : Docket = {
-    val props = ApiService.init()
+    val props = Driver.init()
     new Docket(DocumentationType.SWAGGER_2)
       .select
       .apis(RequestHandlerSelectors.basePackage(props.getProperty(Constants.BASE_PACKAGE)))

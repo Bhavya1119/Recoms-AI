@@ -1,35 +1,32 @@
-package com.recomsAI.base.service
+package com.recomsAI.base.service.User
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.recomsAI.base.api.ApiService
+import com.recomsAI.Driver.sessionToken
 import com.recomsAI.base.constants.Constants
-import com.recomsAI.base.enitity.album.Album
+import com.recomsAI.base.enitity.user.TopArtists
 import com.recomsAI.base.utils.SchemaUtils
 import com.recomsAI.exception.{NotFoundException, RateLimitExceededException, UnauthorizedException}
+import com.recomsAI.workspace.Workspace
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import scalaj.http.{Http, HttpResponse}
 
 import java.util.Properties
 
-
 @Service
-class AlbumService {
+class UserService {
+private val logger = LoggerFactory.getLogger(classOf[UserService])
 
-  private val logger = LoggerFactory.getLogger(classOf[AlbumService])
 
-
-  def getAlbumDetails(albumId : String , props : Properties) : java.util.List[Album] = {
-
-    val response =  getAlbumTracks(albumId,props)
-
+  def getTopArtists(props : Properties, workspace : Workspace): java.util.List[TopArtists] = {
+    val response = topNArtists(props)
     val code = response.code
     try{
+
       code match {
         case 200 =>
-          logger.debug("################ API Success #################")
+          logger.info("###################### API Success #####################")
           val schemaUtils = new SchemaUtils()
-          schemaUtils.getAlbumDetailsFromResponse(response.body)
+          schemaUtils.getTopNArtistsFromResponse(response.body, workspace)
 
         case 401 =>
           logger.info("Bad or expired Token . Please re-authenticate token ..... ")
@@ -41,22 +38,24 @@ class AlbumService {
         case 429 =>
           logger.info("Rate limit reached .... ")
           throw new RateLimitExceededException("Rate Limit Exceeded ")
-
       }
+
+
     }catch {
-      case e : Exception => logger.info("Exception while getting album details .... ")
+      case e : Exception => logger.info("Exception while getting top artists .... ")
         throw e
     }
+
+
   }
 
-  private def getAlbumTracks(albumId: String, props : Properties): HttpResponse[String] = {
-    val apiService = new ApiService()
-    val tokenJson = new ObjectMapper().readTree(apiService.getAuthToken(props))
+  private def topNArtists(props: Properties): HttpResponse[String] = {
 
-    val authToken = tokenJson.get("access_token").asText()
-    val tokenType = tokenJson.get("token_type").asText()
+    val authToken = sessionToken.getTokenValue
+    val tokenType = sessionToken.getTokenType.getValue
+
     try {
-      val response = Http(props.getProperty(Constants.ALBUM_ENDPOINT) + albumId + "/tracks")
+      val response = Http(props.getProperty(Constants.TOP_ARTISTS))
         .timeout(connTimeoutMs = 600000, readTimeoutMs = 600000)
         .header("Authorization", s"$tokenType $authToken")
         .asString
@@ -64,11 +63,9 @@ class AlbumService {
       response
 
     } catch {
-      case e: Exception => logger.info(s"Exception while getting Album Tracks for albumID : ${albumId}")
+      case e: Exception => logger.info("Exception while executing API for fetching top artists .....")
         throw e
     }
-
   }
-
 
 }

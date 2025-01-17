@@ -1,4 +1,3 @@
-
 * {
     margin: 0;
     padding: 0;
@@ -118,4 +117,22 @@ tr:hover {
 
 .artist-url:hover {
     text-decoration: underline;
+}
+
+.back-button-container {
+    margin-bottom: 20px;
+}
+
+.back-button {
+    color: #1DB954;
+    text-decoration: none;
+    font-size: 1.2em;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #1ed760;
 }
