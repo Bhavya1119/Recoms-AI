@@ -1,6 +1,7 @@
 package com.recomsAI
 
 import com.recomsAI.base.utils.FileUtils
+import com.recomsAI.workspace.Workspace
 import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -31,6 +32,7 @@ object Driver {
   private val logger: Logger = LoggerFactory.getLogger(Driver.getClass)
   var props : Properties = _
   var sessionToken : OAuth2AccessToken = _
+  var authWorkspace : Workspace = _
 
   def init() : Properties = {
     logger.debug("################# Initializing Properties ########################")

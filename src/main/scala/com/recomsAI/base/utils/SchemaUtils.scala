@@ -1,11 +1,14 @@
 package com.recomsAI.base.utils
 
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.recomsAI.base.enitity.album.{Album,Artist}
+import com.recomsAI.base.enitity.album.{Album, Artist}
+import com.recomsAI.base.enitity.user.{ArtistInfo, TopArtists}
+import com.recomsAI.workspace.Workspace
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
 import scala.collection.JavaConverters.seqAsJavaListConverter
+import scala.jdk.CollectionConverters.asScalaIteratorConverter
 
 @Service
 class SchemaUtils {
@@ -28,6 +31,20 @@ class SchemaUtils {
     }
 
   }
+
+  private[base] def getTopNArtistsFromResponse(response : String, workspace : Workspace) : java.util.List[TopArtists] = {
+    logger.info("############################## Fetching Top Artists ############################ ")
+    val objectMapper = new ObjectMapper()
+    val rootNode = objectMapper.readTree(response)
+    try{
+      val items = rootNode.get("items")
+      extractTopNInfo(items,workspace)
+    }catch {
+      case e : Exception => logger.info("Exception while computing top artists , ensure response is ok ...... ")
+        throw e
+    }
+  }
+
 
   /**
    * Method that extract useful info from api response
@@ -58,6 +75,28 @@ class SchemaUtils {
   logger.info("##################### Details fetched successfully ####################")
     albums.toList.asJava
   }
+
+  private def extractTopNInfo(rootNode : JsonNode, workspace: Workspace) : java.util.List[TopArtists] = {
+    val topArtists = scala.collection.mutable.HashSet[TopArtists]()
+    rootNode.forEach(itemArray => {
+      val name = itemArray.get("name").asText()
+      val id = itemArray.get("id").asText()
+      val popularity = itemArray.get("popularity").asInt()
+      val href = itemArray.get("href").asText()
+
+      val followers : Long = if(itemArray.has("followers") && itemArray.get("followers").has("total")){
+        itemArray.get("followers").get("total").asLong()
+      } else 0L
+
+      val genres  = itemArray.get("genres").elements().asScala.toList.map(_.asText()).asJava
+      val artistInfo = new ArtistInfo(name,id,genres,followers,popularity,href)
+      topArtists.add(new TopArtists(workspace.userName,workspace.userID,artistInfo))
+
+    })
+    logger.info("######################## Details fetched successfully ########################")
+    topArtists.toList.asJava
+  }
+
 
 
 

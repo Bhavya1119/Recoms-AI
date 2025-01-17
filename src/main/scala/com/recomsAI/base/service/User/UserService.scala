@@ -2,8 +2,10 @@ package com.recomsAI.base.service.User
 
 import com.recomsAI.Driver.sessionToken
 import com.recomsAI.base.constants.Constants
+import com.recomsAI.base.enitity.user.TopArtists
 import com.recomsAI.base.utils.SchemaUtils
 import com.recomsAI.exception.{NotFoundException, RateLimitExceededException, UnauthorizedException}
+import com.recomsAI.workspace.Workspace
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import scalaj.http.{Http, HttpResponse}
@@ -15,7 +17,7 @@ class UserService {
 private val logger = LoggerFactory.getLogger(classOf[UserService])
 
 
-  def getTopArtists(props : Properties) = {
+  def getTopArtists(props : Properties, workspace : Workspace): java.util.List[TopArtists] = {
     val response = topNArtists(props)
     val code = response.code
     try{
@@ -24,7 +26,7 @@ private val logger = LoggerFactory.getLogger(classOf[UserService])
         case 200 =>
           logger.info("###################### API Success #####################")
           val schemaUtils = new SchemaUtils()
-          logger.info("|response| :{}",response)
+          schemaUtils.getTopNArtistsFromResponse(response.body, workspace)
 
         case 401 =>
           logger.info("Bad or expired Token . Please re-authenticate token ..... ")
@@ -41,6 +43,7 @@ private val logger = LoggerFactory.getLogger(classOf[UserService])
 
     }catch {
       case e : Exception => logger.info("Exception while getting top artists .... ")
+        throw e
     }
 
 
