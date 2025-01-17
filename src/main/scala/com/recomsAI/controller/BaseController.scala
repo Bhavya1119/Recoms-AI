@@ -3,6 +3,7 @@ package com.recomsAI.controller
 import com.recomsAI.Driver
 import com.recomsAI.Driver.{authWorkspace, props}
 import com.recomsAI.base.enitity.album.Album
+import com.recomsAI.base.enitity.user.TopArtists
 import com.recomsAI.base.service.Album.AlbumService
 import com.recomsAI.base.service.User.UserService
 import com.recomsAI.spark.SparkService
@@ -16,7 +17,7 @@ class BaseController {
 
   @GetMapping(Array("/"))
   def home() : String = {
-    "index.html"
+    "dashboard.html"
   }
   @GetMapping(Array("/sparkJob"))
   def runSparkJob():String  = {
@@ -48,7 +49,7 @@ class BaseController {
    * API to fetch top artists for any user
    */
   @GetMapping(Array("/topArtists"))
-  private def fetchTopArtists()  = {
+  private def fetchTopArtists(): java.util.List[TopArtists]  = {
     logger.info("Fetching top artists ..... ")
     try{
       props = Driver.init()
@@ -57,7 +58,7 @@ class BaseController {
         throw e
     }
     val top = new UserService().getTopArtists(props,authWorkspace)
-    logger.info("Top Artists : {} ", top)
+    top
   }
 
 }
