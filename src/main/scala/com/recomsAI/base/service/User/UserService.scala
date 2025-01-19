@@ -20,6 +20,7 @@ private val logger = LoggerFactory.getLogger(classOf[UserService])
   def getTopArtists(props : Properties, workspace : Workspace): java.util.List[TopArtists] = {
     val response = topNArtists(props)
     val code = response.code
+
     try{
 
       code match {

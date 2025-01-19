@@ -1,23 +1,31 @@
 package com.recomsAI.controller
 
+
 import com.recomsAI.Driver
 import com.recomsAI.Driver.{authWorkspace, props}
 import com.recomsAI.base.enitity.album.Album
+import com.recomsAI.base.enitity.user.TopArtists
 import com.recomsAI.base.service.Album.AlbumService
 import com.recomsAI.base.service.User.UserService
 import com.recomsAI.spark.SparkService
 import org.slf4j.LoggerFactory
-import org.springframework.web.bind.annotation.{GetMapping, PathVariable, RestController}
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.{GetMapping, PathVariable, ResponseBody}
 
-@RestController
+@Controller
 class BaseController {
 
   private val logger = LoggerFactory.getLogger(classOf[BaseController])
 
+  /**
+   * Home page Redirection
+   * @return
+   */
   @GetMapping(Array("/"))
   def home() : String = {
-    "index.html"
+    "dashboard.html"
   }
+
   @GetMapping(Array("/sparkJob"))
   def runSparkJob():String  = {
     SparkService.runSparkJob()
@@ -30,6 +38,7 @@ class BaseController {
    * @return list of album objects containing album info
    */
   @GetMapping(value = Array("/getAlbumDetails/{albumId}"))
+  @ResponseBody
   private def getAlbumDetails(@PathVariable albumId : String):java.util.List[Album]  = {
     logger.info("######### Fetching album Details ####################")
     try{
@@ -48,7 +57,8 @@ class BaseController {
    * API to fetch top artists for any user
    */
   @GetMapping(Array("/topArtists"))
-  private def fetchTopArtists()  = {
+  @ResponseBody
+  private def fetchTopArtists(): java.util.List[TopArtists]  = {
     logger.info("Fetching top artists ..... ")
     try{
       props = Driver.init()
@@ -57,7 +67,7 @@ class BaseController {
         throw e
     }
     val top = new UserService().getTopArtists(props,authWorkspace)
-    logger.info("Top Artists : {} ", top)
+    top
   }
 
 }
