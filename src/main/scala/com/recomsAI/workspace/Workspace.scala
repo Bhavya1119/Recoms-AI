@@ -13,7 +13,7 @@ package com.recomsAI.workspace
   var workspaceEmail      : Option[String] = None
 
 
-  var userID              : String = defaultUser
+  var userID              : String = defaultId
   var userName            : String = defaultUser
 
   def setWorkspace(workspaceName : Option[String] = defaultWorkspaceName,
@@ -31,5 +31,16 @@ package com.recomsAI.workspace
     this.userID = userId
     this.userName = userName
   }
+
+   def clear() : Unit = {
+     this.userID = defaultUser
+     this.userName = defaultUser
+     this.workspaceName = None
+     this.workspaceEmail = None
+     this.workspaceTimestamp = None
+     this.workspaceId = None
+   }
+
+
 
 }
