@@ -17,9 +17,10 @@ body {
 }
 
 .page-header h1 {
-    color: #1DB954;
+    color: #4bb2e5;
     font-size: 2.5em;
     margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(75, 178, 229, 0.6);
 }
 
 .page-header p {
@@ -43,16 +44,21 @@ input {
 
 button {
     padding: 10px 20px;
-    background-color: #1DB954;
+    background-color: #4bb2e5;
     border: none;
     border-radius: 4px;
     color: white;
     cursor: pointer;
     margin-left: 10px;
+    box-shadow: 0 0 8px rgba(75, 178, 229, 0.5);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0.95;
 }
 
 button:hover {
-    background-color: #1ed760;
+    background-color: #348cc9;
+    box-shadow: 0 0 12px rgba(52, 140, 201, 0.7);
+    opacity: 1;
 }
 
 .album-details {
@@ -111,12 +117,14 @@ tr:hover {
 }
 
 .artist-url {
-    color: #1DB954;
+    color: #4bb2e5;
     text-decoration: none;
+    text-shadow: 0 0 8px rgba(75, 178, 229, 0.4);
 }
 
 .artist-url:hover {
     text-decoration: underline;
+    text-shadow: 0 0 12px rgba(75, 178, 229, 0.6);
 }
 
 .back-button-container {
@@ -124,15 +132,19 @@ tr:hover {
 }
 
 .back-button {
-    color: #1DB954;
+    color: #4bb2e5;
     text-decoration: none;
     font-size: 1.2em;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    text-shadow: 0 0 8px rgba(75, 178, 229, 0.4);
+    opacity: 0.95;
 }
 
 .back-button:hover {
-    color: #1ed760;
+    color: #348cc9;
+    text-shadow: 0 0 12px rgba(52, 140, 201, 0.7);
+    opacity: 1;
 }
