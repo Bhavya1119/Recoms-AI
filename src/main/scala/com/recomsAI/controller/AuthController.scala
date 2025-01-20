@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.{GetMapping, RequestMapping, ResponseBody}
 
 
+
 @Controller
 @RequestMapping(Array("/api/v1"))
 class AuthController {
@@ -66,14 +67,17 @@ class AuthController {
   def AuthCentre(authToken: OAuth2AuthenticationToken): String = {
   logger.info(s"Auth Token : {}", authToken)
 
+
     if (authToken == null) {
       logger.info("OAuth2AuthenticationToken is null")
       "Authentication Error"
     }
-    val client : OAuth2AuthorizedClient = authorizedClientService
-                                          .loadAuthorizedClient(
-                                            authToken.getAuthorizedClientRegistrationId,
-                                            authToken.getName)
+
+    val clientRegistrationId = authToken.getAuthorizedClientRegistrationId
+    val principalName = authToken.getName
+
+
+    val client : OAuth2AuthorizedClient = authorizedClientService.loadAuthorizedClient(clientRegistrationId,principalName)
 
     sessionToken = client.getAccessToken
 
@@ -95,7 +99,7 @@ class AuthController {
   @GetMapping(Array("/signout"))
   def logout(): String = {
     if(sessionToken != null)  sessionToken = null
-    authWorkspace.clear()
+    if(authWorkspace != null) authWorkspace.clear()
     logger.info("Cleared session and workspace .... ")
     SecurityContextHolder.clearContext()
     "redirect:/"

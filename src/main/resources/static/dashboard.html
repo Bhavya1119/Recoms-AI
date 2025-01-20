@@ -8,19 +8,24 @@
 </head>
 <body>
 <div class="sidebar">
-  <div class="sidebar-brand">Recoms-AI</div>
-  <div class="sidebar-tabs">
-    <button id="albumsTab" class="sidebar-tab">Albums</button>
-    <button id="topArtistsTab" class="sidebar-tab">Top Artists</button>
-  </div>
-  <div class="sidebar-footer">
-    <button id="authButton" class="sidebar-tab"></button>
+  <div class="sidebar-content">
+    <div class="sidebar-brand">Recoms-AI</div>
+    <div class="sidebar-tabs">
+      <button id="albumsTab" class="sidebar-tab">Albums</button>
+      <button id="topArtistsTab" class="sidebar-tab">Top Artists</button>
+    </div>
+    <!-- Adjusted Footer -->
+    <div class="sidebar-footer" style="margin-bottom: 2rem;">
+      <button id="authButton" class="sidebar-tab">Logout</button>
+    </div>
   </div>
 </div>
 
 <div class="dashboard-content">
-  <h1>Recoms-AI Dashboard</h1>
-  <p>Analyze data here ....</p>
+  <div class="dashboard-header">
+    <h1>Welcome, User!</h1>
+    <p>Your personalized data analysis dashboard</p>
+  </div>
 </div>
 
 <script src="/js/dashboard.js"></script>
